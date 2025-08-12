@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study - Tu plataforma educativa inteligente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Pantallas */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Homepage */
+        .hero {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Formulario de Registro */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Panel de Cursos */
+        .courses-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-message h2 {
+            color: #2d3748;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .welcome-message p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .course-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .course-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .math { color: #e53e3e; }
+        .physics { color: #3182ce; }
+        .chemistry { color: #38a169; }
+
+        .course-card h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h3 {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mode-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mode-selector select {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .mode-selector select option {
+            background: #2d3748;
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .message.bot {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input-container {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Popup Overlay para GPT */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-window {
+            background: #fff;
+            border-radius: 16px;
+            width: 90vw;
+            height: 80vh;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-overlay.show .popup-window {
+            transform: scale(1);
+        }
+
+        .popup-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .popup-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .popup-content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Iframe Integration */
+        .gpt-frame-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #667eea;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 8px 0;
+            animation: frameSlideIn 0.5s ease-out;
+        }
+
+        .gpt-frame-header {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 16px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gpt-frame {
+            width: 100%;
+            height: 500px;
+            border: none;
+            background: white;
+            display: block;
+        }
+
+        .close-frame {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .close-frame:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes frameSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chat-container {
+                height: 500px;
+                margin: 20px;
+            }
+            
+            .form-container, .courses-panel {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+
+            .popup-window {
+                width: 95vw;
+                height: 85vh;
+            }
+
+            .mode-selector {
+                display: none; /* Ocultar en móvil para ahorrar espacio */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla Principal -->
+    <div class="screen active" id="homepage">
+        <div class="container">
+            <div class="hero">
+                <h1>Smart Study</h1>
+                <h2>Tu plataforma educativa inteligente</h2>
+                <p>Descubre una nueva forma de aprender. Accede a asesores interactivos con IA, herramientas de estudio avanzadas y un seguimiento personalizado de tu progreso.</p>
+                <button class="btn-primary" onclick="showScreen('register')">Comenzar Ahora</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Registro -->
+    <div class="screen" id="register">
+        <div class="container">
+            <div class="form-container">
+                <h2>Registro de Estudiante</h2>
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label for="nombres">Nombres:</label>
+                        <input type="text" id="nombres" name="nombres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos:</label>
+                        <input type="text" id="apellidos" name="apellidos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="codigo">Código de Estudiante:</label>
+                        <input type="text" id="codigo" name="codigo" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">
+                        Acceder al Panel de Cursos
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Cursos -->
+    <div class="screen" id="courses">
+        <div class="container">
+            <div class="courses-panel">
+                <div class="welcome-message">
+                    <h2>¡Bienvenido/a, <span id="studentName"></span>!</h2>
+                    <p>Selecciona la materia en la que necesitas ayuda y comienza a estudiar con nuestros asistentes inteligentes especializados.</p>
+                </div>
+                <div class="courses-grid">
+                    <div class="course-card" onclick="openChat('matematica')">
+                        <div class="course-icon math">📊</div>
+                        <h3>Matemática</h3>
+                        <p>Álgebra, cálculo, geometría y más</p>
+                    </div>
+                    <div class="course-card" onclick="openChat('fisica')">
+                        <div class="course-icon physics">⚛️</div>
+                        <h3>Física</h3>
+                        <p>Mecánica, termodinámica, óptica</p>
+                    </div>
+                    <div class="course-card" onclick="openChat('quimica')">
+                        <div class="course-icon chemistry">🧪</div>
+                        <h3>Química</h3>
+                        <p>Orgánica, inorgánica, bioquímica</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="screen" id="chat">
+        <div class="container">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3><span id="chatSubject"></span> - Asistente IA</h3>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="mode-selector">
+                            <select id="modeSelect" onchange="changeMode()">
+                                <option value="popup">🪟 Ventana Flotante</option>
+                                <option value="iframe">🖼️ Mostrar Aquí</option>
+                                <option value="copy">📋 Nueva Pestaña</option>
+                            </select>
+                        </div>
+                        <button class="btn-back" onclick="showScreen('courses')">← Volver</button>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <strong>🤖 Asistente IA:</strong> ¡Hola! Soy tu asistente especializado en <span id="subjectName"></span>. ¿Cómo puedo ayudarte hoy?
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <textarea class="chat-input" id="messageInput" placeholder="Escribe tu pregunta aquí..." rows="2"></textarea>
+                    <button class="btn-send" onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Overlay para GPT Neutrino -->
+    <div id="popupOverlay" class="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-window" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <span>🤖 GPT Neutrino - <span id="popupSubject">Tutor Especializado</span></span>
+                <button class="popup-close" onclick="closePopup()" title="Cerrar">×</button>
+            </div>
+            <div class="popup-content">
+                <iframe id="popupIframe" class="popup-iframe" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        // Configuración
+        const GPT_URL = "https://chatgpt.com/g/g-682b57c92b308191b5add667cb74e058-neutrino";
+        let currentStudent = {};
+        let currentSubject = '';
+        let currentMode = 'popup';
+
+        // Utilidades
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showToast(msg, duration = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), duration);
+        }
+
+        // Registro de estudiante
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nombres = document.getElementById('nombres').value;
+            const apellidos = document.getElementById('apellidos').value;
+            const codigo = document.getElementById('codigo').value;
+            
+            currentStudent = {
+                nombres: nombres,
+                apellidos: apellidos,
+                codigo: codigo,
+                timestamp: new Date().toISOString()
+            };
+            
+            document.getElementById('studentName').textContent = nombres;
+            showScreen('courses');
+        });
+
+        // Abrir chat para materia
+        function openChat(subject) {
+            currentSubject = subject;
+            
+            const subjectNames = {
+                'matematica': '📊 Matemática',
+                'fisica': '⚛️ Física',
+                'quimica': '🧪 Química'
+            };
+            
+            const subjectTexts = {
+                'matematica': 'Matemática',
+                'fisica': 'Física',
+                'quimica': 'Química'
+            };
+            
+            document.getElementById('chatSubject').textContent = subjectNames[subject];
+            document.getElementById('subjectName').textContent = subjectTexts[subject];
+            document.getElementById('popupSubject').textContent = subjectTexts[subject];
+            
+            // Limpiar mensajes anteriores
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="message bot">
+                    <strong>🤖 Asistente IA:</strong> ¡Hola ${currentStudent.nombres}! Soy tu asistente especializado en ${subjectTexts[subject]}. ¿Cómo puedo ayudarte hoy?
+                </div>
+            `;
+            
+            showScreen('chat');
+        }
+
+        // Cambiar modo de interacción
+        function changeMode() {
+            const select = document.getElementById('modeSelect');
+            currentMode = select.value;
+            showToast(`Modo cambiado a: ${select.options[select.selectedIndex].text}`, 2000);
+        }
+
+        // Crear iframe GPT
+        function createGPTFrame(message) {
+            const container = document.createElement('div');
+            container.className = 'gpt-frame-container';
+            
+            container.innerHTML = `
+                <div class="gpt-frame-header">
+                    <span>🤖 GPT Neutrino - ${currentSubject}</span>
+                    <button class="close-frame" onclick="this.closest('.gpt-frame-container').remove()" title="Cerrar">×</button>
+                </div>
+                <iframe class="gpt-frame" src="${GPT_URL}" title="GPT Neutrino"></iframe>
+            `;
+            
+            return container;
+        }
+
+        // Mostrar popup
+        function showPopup(message) {
+            const overlay = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupIframe');
+            
+            iframe.src = GPT_URL;
+            overlay.classList.add('show');
+            
+            if (message && navigator.clipboard) {
+                navigator.clipboard.writeText(message).then(() => {
+                    showToast("💬 Mensaje copiado. Pégalo en el chat de Neutrino.", 4000);
+                });
+            }
+        }
+
+        // Cerrar popup
+        function closePopup(event) {
+            if (event && event.target !== event.currentTarget) return;
+            
+            const overlay = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupIframe');
+            
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                iframe.src = 'about:blank';
+            }, 300);
+        }
+
+        // Enviar mensaje
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (message === '') return;
+            
+            // Agregar mensaje del usuario
+            const chatMessages = document.getElementById('chatMessages');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `<strong>Tú:</strong> ${message}`;
+            chatMessages.appendChild(userMessage);
+            
+            // Limpiar input
+            messageInput.value = '';
+            
+            // Procesar según el modo
+            setTimeout(() => {
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot';
+                
+                switch(currentMode) {
+                    case 'popup':
+                        botMessage.innerHTML = `<strong>🤖 Asistente IA:</strong> 🪟 <strong>Abrí GPT Neutrino en ventana flotante</strong><br><br>📝 Tu pregunta: "${message}"<br><br>✨ La ventana flotante te permite usar Neutrino sin salir de esta página.<br><br>📋 Tu mensaje está copiado - solo pégalo en la ventana flotante.`;
+                        showPopup(message);
+                        break;
+                        
+                    case 'iframe':
+                        botMessage.innerHTML = `<strong>🤖 Asistente IA:</strong> 🖼️ <strong>GPT Neutrino cargado abajo</strong><br><br>📝 Tu pregunta: "${message}"<br><br>💡 <strong>Instrucciones:</strong><br>1. Pega tu pregunta en el chat de abajo<br>2. Neutrino te responderá directamente<br>3. Puedes continuar la conversación allí`;
+                        
+                        // Crear y añadir iframe
+                        const frame = createGPTFrame(message);
+                        chatMessages.appendChild(frame);
+                        
+                        // Copiar mensaje
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(message);
+                            showToast("📋 Mensaje copiado. Pégalo en el chat de abajo.", 4000);
+                        }
+                        break;
+                        
+                    case 'copy':
+                        botMessage.innerHTML = `<strong>🤖 Asistente IA:</strong> 🔗 <strong>Abrí Neutrino en una pestaña nueva</strong> y copié tu mensaje al portapapeles.<br><br>📋 <em>Pega el mensaje allá para continuar la conversación.</em>`;
+                        
+                        // Abrir en nueva pestaña
+                        window.open(GPT_URL, '_blank', 'noopener,noreferrer');
+                        
+                        // Copiar al portapapeles
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(message);
+                            showToast("📋 Mensaje copiado al portapapeles", 3000);
+                        }
+                        break;
+                }
+                
+                chatMessages.appendChild(botMessage);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Enter para enviar
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Smart Study Platform cargada correctamente ✅');
+        });
+    </script>
+</body>
+</html>
